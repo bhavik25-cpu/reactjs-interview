@@ -1,9 +1,9 @@
  1. create a counter child component in React and pass the counter value to the parent component:
-
+```javascript
 <!-- App.jsx -->
 import React from 'react';
 import ParentComponent from './components/ParentComponent';
-```javascript
+
 const App = () => {
   return (
     <div>
