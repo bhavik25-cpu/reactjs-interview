@@ -14,9 +14,9 @@ const App = () => {
 };
 
 export default App;|
-
 ```
 
+```javascript
 <!--  ParentComponent.js -->
 import React, { useState } from 'react';
 import ChildComponent from './ChildComponent';
@@ -38,7 +38,8 @@ const ParentComponent = () => {
 };
 
 export default ParentComponent;
-
+```
+```javascript
 <!-- ParentComponent.js -->
 import React, { useState } from 'react';
 import ChildComponent from './ChildComponent';
@@ -60,11 +61,12 @@ const ParentComponent = () => {
 };
 
 export default ParentComponent;
+```
 __________________________________________________________________________________________________________________
 
 
 2.search arrays
-
+```javascript
 <!-- app.jsx -->
 import React, { useState } from 'react';
 
@@ -115,6 +117,7 @@ function App() {
 }
 
 export default App;
+```
 
 
 
@@ -145,3 +148,4 @@ function Counter() {
 }
 
 export default Counter;
+```
