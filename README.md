@@ -7,7 +7,7 @@ import ParentComponent from './components/ParentComponent';
 const App = () => {
   return (
     <div>
-     // <h1>Counter App</h1>
+     ## <h1>Counter App</h1>
       <ParentComponent />
     </div>
   );
