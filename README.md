@@ -3,7 +3,7 @@
 <!-- App.jsx -->
 import React from 'react';
 import ParentComponent from './components/ParentComponent';
-
+```javascript
 const App = () => {
   return (
     <div>
@@ -13,7 +13,9 @@ const App = () => {
   );
 };
 
-export default App;
+export default App;|
+
+```
 
 <!--  ParentComponent.js -->
 import React, { useState } from 'react';
