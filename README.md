@@ -39,6 +39,7 @@ const ParentComponent = () => {
 
 export default ParentComponent;
 ```
+
 ```javascript
 <!-- ParentComponent.js -->
 import React, { useState } from 'react';
@@ -124,6 +125,7 @@ export default App;
 __________________________________________________________________________________________________________________
 
 3.counter
+```javascript
 import React, { useState } from 'react';
 
 function Counter() {
