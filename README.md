@@ -163,3 +163,280 @@ render the data
 pagination (all operation from front-end side)
 5. Title field clickable and show the popup msg on title click ex: ( The 
 product title is {Title} 
+
+
+UserData.jsx
+
+```javascript
+// UserData.jsx
+const UserData = ({ products }) => {
+    return (
+        <>
+            {Array.isArray(products) && products.map((product) => {
+                const { id, title, description, price, rating, brand, category } = product;
+                return (
+                    <tr key={id}>
+                        <td>{id}</td>
+                        <td>{title}</td>
+                        <td>{description}</td>
+                        <td>{price}</td>
+                        <td>{rating}</td>
+                        <td>{brand}</td>
+                        <td>{category}</td>
+                    </tr>
+                );
+            })}
+        </>
+    );
+};
+
+export default UserData;
+
+```
+
+App.jsx
+```javascript
+import { useEffect, useState } from "react";
+import UserData from "./components/UserData.jsx";
+
+const API = "https://dummyjson.com/products";
+
+const App = () => {
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filterText, setFilterText] = useState("");
+    const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
+    const [popupMessage, setPopupMessage] = useState("");
+
+    const fetchProducts = async (url) => {
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data && data.products && data.products.length > 0) {
+                setProducts(data.products);
+                setFilteredProducts(data.products);
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts(API);
+    }, []);
+
+    const handleFilterChange = (e) => {
+        setFilterText(e.target.value);
+        const filteredData = products.filter((product) =>
+            Object.values(product).some(
+                (value) =>
+                    typeof value === "string" &&
+                    value.toLowerCase().includes(e.target.value.toLowerCase())
+            )
+        );
+        setFilteredProducts(filteredData);
+        setCurrentPage(1);
+    };
+
+    const handleSort = (key) => {
+        let direction = "ascending";
+        if (sortConfig.key === key && sortConfig.direction === "ascending") {
+            direction = "descending";
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const sortedProducts = () => {
+        const sortableProducts = [...filteredProducts];
+        if (sortConfig.key !== "") {
+            sortableProducts.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === "ascending" ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === "ascending" ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableProducts;
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = sortedProducts().slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handleTitleClick = (title) => {
+        setPopupMessage(`The product title is: ${title}`);
+    };
+
+    return (
+        <>
+            <div className="filter-container">
+                <input
+                    type="text"
+                    placeholder="Filter products..."
+                    value={filterText}
+                    onChange={handleFilterChange}
+                />
+            </div>
+            <div className="table-container">
+                <table className="medium-table">
+                    <thead>
+                        <tr>
+                            <th onClick={() => handleSort("id")}>ID</th>
+                            <th onClick={() => handleSort("title")}>Title</th>
+                            <th onClick={() => handleSort("description")}>Description</th>
+                            <th onClick={() => handleSort("price")}>Price</th>
+                            <th onClick={() => handleSort("rating")}>Rating</th>
+                            <th onClick={() => handleSort("brand")}>Brand</th>
+                            <th onClick={() => handleSort("category")}>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentItems.map((item) => (
+                            <tr key={item.id}>
+                                <td>{item.id}</td>
+                                <td onClick={() => handleTitleClick(item.title)}>{item.title}</td>
+                                <td>{item.description}</td>
+                                <td>{item.price}</td>
+                                <td>{item.rating}</td>
+                                <td>{item.brand}</td>
+                                <td>{item.category}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="pagination-container">
+                <Pagination
+                    itemsPerPage={itemsPerPage}
+                    totalItems={filteredProducts.length}
+                    paginate={paginate}
+                    currentPage={currentPage}
+                />
+            </div>
+            {popupMessage && (
+                <div className="popup">
+                    <p>{popupMessage}</p>
+                    <button onClick={() => setPopupMessage("")}>Close</button>
+                </div>
+            )}
+        </>
+    );
+};
+
+export default App;
+
+const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    return (
+        <nav>
+            <ul className="pagination">
+                {pageNumbers.map((number) => (
+                    <li key={number} className="page-item">
+                        <button
+                            onClick={() => paginate(number)}
+                            className={`page-link${currentPage === number ? " active" : ""}`}
+                        >
+                            {number}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
+};
+```
+
+index.css
+```javascript
+
+.filter-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.medium-table {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-height: 500px; /* Adjust height as needed */
+}
+
+.filter-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin-right: 5px;
+}
+
+.page-link {
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.page-link.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  z-index: 999;
+}
+
+.popup p {
+  margin-bottom: 10px;
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
