@@ -430,6 +430,10 @@ index.css
 ```
 
 
+![image](https://github.com/bhavik25-cpu/reactjs-interview/assets/82199211/b77e5fdc-ac42-4eb3-b167-52a35417c302)
+
+
+
 
 
 
