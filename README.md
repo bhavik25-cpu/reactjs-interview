@@ -151,3 +151,15 @@ function Counter() {
 
 export default Counter;
 ```
+
+______________________________________________________________________________________________________________________________________________
+Product Grid operations:
+1. create frontend app.
+2. create one table with multiple column like Title, Description, Price, 
+Rating, Stock, Brand, Category.
+3. Integrate this API (https://dummyjson.com/products) with table to 
+render the data
+4. We can allow user to do the filter and sorting for all column and 
+pagination (all operation from front-end side)
+5. Title field clickable and show the popup msg on title click ex: ( The 
+product title is {Title} 
