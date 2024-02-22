@@ -41,27 +41,23 @@ export default ParentComponent;
 ```
 
 ```javascript
-<!-- ParentComponent.js -->
-import React, { useState } from 'react';
-import ChildComponent from './ChildComponent';
+import React from 'react';
 
-const ParentComponent = () => {
-  const [counterFromChild, setCounterFromChild] = useState(0);
-
-  const handleCounterChange = (newCounterValue) => {
-    setCounterFromChild(newCounterValue);
+const ChildComponent = ({ onCountChange }) => {
+  const handleButtonClick = () => {
+    // Increase count by 1 and pass it to the parent component
+    onCountChange(1);
   };
 
   return (
     <div>
-      <h1>Parent Component</h1>
-      <h2>Counter from Child: {counterFromChild}</h2>
-      <ChildComponent onCounterChange={handleCounterChange} />
+      <button onClick={handleButtonClick}>Increase Count</button>
     </div>
   );
 };
 
-export default ParentComponent;
+export default ChildComponent;
+
 ```
 __________________________________________________________________________________________________________________
 
