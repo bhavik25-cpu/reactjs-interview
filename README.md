@@ -429,6 +429,39 @@ index.css
 ![image](https://github.com/bhavik25-cpu/reactjs-interview/assets/82199211/b77e5fdc-ac42-4eb3-b167-52a35417c302)
 
 
+____________________________________________________________________________________________________________________________________
+thttps://jsonplaceholder.typicode.com/users
+
+```javascript
+
+import React, { useState, useEffect } from "react";
+
+function UserList() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((data) => setUsers(data))
+      .catch((error) => console.error("Error fetching users:", error));
+  }, []);
+
+  return (
+    <div>
+      <h1>User List</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            <strong>{user.name}</strong> - {user.email}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default UserList;
+```
 
 
 
