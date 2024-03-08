@@ -1,3 +1,8 @@
+
+https://github.com/sudheerj/reactjs-interview-questions
+
+https://github.com/Devinterview-io/react-interview-questions
+
  1. create a counter child component in React and pass the counter value to the parent component:
 ```javascript
 <!-- App.jsx -->
