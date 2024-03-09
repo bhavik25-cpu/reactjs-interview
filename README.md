@@ -435,7 +435,7 @@ index.css
 
 
 ____________________________________________________________________________________________________________________________________
-thttps://jsonplaceholder.typicode.com/users
+https://jsonplaceholder.typicode.com/users
 
 ```javascript
 
@@ -469,9 +469,44 @@ export default UserList;
 ```
 
 
+_________________________________________________________________________________________________
+https://dummy.restapiexample.com/api/v1/employees
+employee_salary > 20000
+To fetch data from the provided API and filter employees with a salary greater than 20000, you can modify the useEffect hook in your UserList component like this:
+```javascript
+import React, { useState, useEffect } from "react";
 
+function UserList() {
+  const [users, setUsers] = useState([]);
 
+  useEffect(() => {
+    fetch("https://dummy.restapiexample.com/api/v1/employees")
+      .then((response) => response.json())
+      .then((data) => {
+        // Filter employees with a salary greater than 20000
+        const filteredUsers = data.data.filter((user) => user.employee_salary > 20000);
+        setUsers(filteredUsers);
+      })
+      .catch((error) => console.error("Error fetching users:", error));
+  }, []);
 
+  return (
+    <div>
+      <h1>User List</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            <strong>{user.employee_name}</strong> - {user.employee_salary}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default UserList;
+
+```
 
 
 
