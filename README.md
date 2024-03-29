@@ -507,8 +507,47 @@ function UserList() {
 export default UserList;
 
 ```
+_____________________________________________________________________________________________
+
+https://jsonplaceholder.typicode.com/posts
+use this api and write a react js code  
+title of the first char all 
+sorted  
+```javascript
+
+import React, { useState, useEffect } from 'react';
+
+function App() {
+  const [sortedPosts, setSortedPosts] = useState([]);
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then(data => {
+        const sortedData = data.sort((a, b) => {
+          const titleA = a.title.charAt(0).toLowerCase();
+          const titleB = b.title.charAt(0).toLowerCase();
+          if (titleA < titleB) return -1;
+          if (titleA > titleB) return 1;
+          return 0;
+        });
+        setSortedPosts(sortedData);
+      })
+      .catch(error => console.error('Error fetching data: ', error));
+  }, []);
+
+  return (
+    <div>
+      <h1>Sorted Posts in JSON Format</h1>
+      <pre>{JSON.stringify(sortedPosts, null, 2)}</pre>
+    </div>
+  );
+}
+
+export default App;
 
 
+```
 
 
 
