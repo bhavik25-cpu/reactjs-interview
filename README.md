@@ -549,6 +549,86 @@ export default App;
 
 ```
 
+__________________________________________________________________
+
+Create a typeahead (searchable select) component in react. When searching, it should populate the results in a dropdown popup just below the input field. Use ApI https://api.jikan.moe/v4/anime?q={searchText} for populating results. Replace searchText with the input. It will return a list of anime episodes. Show title and image of the anime in the options. Once selected, the dropdown should close and selection should be displayed in the input field. Optimise  the API calls so that APIs are only fired when user stops typing.
+
+```javascript
+
+import React, { useState, useEffect } from 'react';
+
+const Typeahead = () => {
+  const [searchText, setSearchText] = useState('');
+  const [results, setResults] = useState([]);
+  const [selected, setSelected] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [typingTimeout, setTypingTimeout] = useState(null);
+
+  // Fetch anime from API
+  const fetchAnime = async (query) => {
+    if (query.trim() === '') {
+      setResults([]);
+      return;
+    }
+    const response = await fetch(`https://api.jikan.moe/v4/anime?q=${query}`);
+    const data = await response.json();
+    setResults(data.data || []);
+  };
+
+  // Debounced search function
+  const handleSearch = (e) => {
+    const input = e.target.value;
+    setSearchText(input);
+    setIsOpen(true);
+
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+
+    setTypingTimeout(
+      setTimeout(() => {
+        fetchAnime(input);
+      }, 500) // Debounce for 500ms
+    );
+  };
+
+  // Handle selecting an option
+  const handleSelect = (title) => {
+    setSelected(title);
+    setSearchText(title);
+    setIsOpen(false);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={selected || searchText}
+        onChange={handleSearch}
+        placeholder="Search anime..."
+      />
+      {isOpen && results.length > 0 && (
+        <ul style={{ border: '1px solid black', listStyle: 'none', padding: '0' }}>
+          {results.map((anime) => (
+            <li
+              key={anime.mal_id}
+              onClick={() => handleSelect(anime.title)}
+              style={{ cursor: 'pointer', padding: '5px', display: 'flex', alignItems: 'center' }}
+            >
+              <img src={anime.images.jpg.image_url} alt={anime.title} width="50" />
+              <span style={{ marginLeft: '10px' }}>{anime.title}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default Typeahead;
+```
+
+
 
 
 
