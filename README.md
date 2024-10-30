@@ -689,6 +689,45 @@ export default TodoApp;
 ```
 
 
+______________________________________________________________
 
+Imagine you're building a countdown timer component in React application. How would y design this component to accura count down from a specified tim update the UI in real-time, and trigger specific actions when the timer reaches zero? Describe the component structure and any sta management techniques
+```javascript
 
+import React, { useState, useEffect } from 'react';
+
+const CountdownTimer = ({ initialTime = 60, onComplete }) => {
+  const [timeLeft, setTimeLeft] = useState(initialTime);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    if (isNaN(initialTime) || initialTime < 0) setTimeLeft(60); // fallback if initialTime is invalid
+
+    let interval;
+    if (isActive && timeLeft > 0) {
+      interval = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
+    } else if (timeLeft === 0) {
+      clearInterval(interval);
+      onComplete && onComplete();
+    }
+    return () => clearInterval(interval);
+  }, [isActive, timeLeft, onComplete, initialTime]);
+
+  const toggleTimer = () => setIsActive(!isActive);
+  const resetTimer = () => { setTimeLeft(initialTime); setIsActive(false); };
+  
+  const formatTime = () => 
+    `${String(Math.floor(timeLeft / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(2, '0')}`;
+
+  return (
+    <div>
+      <h2>{formatTime()}</h2>
+      <button onClick={toggleTimer}>{isActive ? 'Pause' : 'Start'}</button>
+      <button onClick={resetTimer}>Reset</button>
+    </div>
+  );
+};
+
+export default CountdownTimer;
+```
 
