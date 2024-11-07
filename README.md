@@ -731,3 +731,84 @@ const CountdownTimer = ({ initialTime = 60, onComplete }) => {
 export default CountdownTimer;
 ```
 
+________________________________________________________________
+
+
+React project where you're managing a list of tasks with functionality to add, toggle, and delete tasks
+```javascript
+
+import React, { useState } from 'react';
+
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState("");
+
+  const handleNewTaskChange = (event) => {
+    setNewTask(event.target.value);
+  };
+
+  const handleAddTask = () => {
+    if (newTask.trim() !== "") {
+      const newTaskObj = {
+        id: Date.now(),
+        text: newTask,
+        completed: false
+      };
+      setTasks([...tasks, newTaskObj]);
+      setNewTask(""); // Clear input field
+    }
+  };
+
+  const handleToggleTask = (taskId) => {
+    setTasks(tasks.map((task) =>
+      task.id === taskId ? { ...task, completed: !task.completed } : task
+    ));
+  };
+
+  const handleDeleteTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
+
+  return (
+    <div className="App">
+      <input
+        type="text"
+        value={newTask}
+        onChange={handleNewTaskChange}
+        placeholder="Add a new task"
+      />
+      <button onClick={handleAddTask}>Add Task</button>
+
+      {tasks.length === 0 ? (
+        <p>No tasks to display.</p>
+      ) : (
+        <ul>
+          {tasks.map((task) => (
+            <li key={task.id} className="flex-container">
+              <div className="flex-item" style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                {task.text}
+              </div>
+              <button
+                className="flex-item1"
+                onClick={() => handleToggleTask(task.id)}
+              >
+                {task.completed ? "Mark Incomplete" : "Mark Complete"}
+              </button>
+              <button
+                className="flex-item1"
+                onClick={() => handleDeleteTask(task.id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default App;
+
+```
+
