@@ -845,4 +845,79 @@ tasks.forEach((task) => {
 });
 
 ```
+_________________________________________________
+
+
+ create a simple search bar (tab) in React, here’s how you can implement it. The search bar can be used to filter through a list of items.
+
+
+SearchComponent.tsx
+
+
+```javascript
+
+import React, { useState } from 'react';
+
+const SearchComponent: React.FC = () => {
+  const tasks = [
+    { title: "Complete the React tutorial", body: "Learn about components, state, and props." },
+    { title: "Finish the JavaScript project", body: "Implement the remaining features and fix any bugs." },
+    { title: "Read a book", body: "Choose a book from your reading list and start reading." },
+    { title: "Go for a walk", body: "Take a break from work and enjoy some fresh air." },
+    { title: "Learn a new skill", body: "Explore a new hobby or learn a new programming language." },
+  ];
+
+  // State for search term
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Filter tasks based on the search term
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="search-container">
+      <input
+        type="text"
+        placeholder="Search tasks..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
+      <ul className="task-list">
+        {filteredTasks.map((task, index) => (
+          <li key={index} className="task-item">
+            <h3>{task.title}</h3>
+            <p>{task.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default SearchComponent;
+
+```
+
+
+App.tsx
+```javascript
+
+import React from 'react';
+import SearchComponent from './SearchComponent';
+
+const App: React.FC = () => {
+  return (
+    <div className="App">
+      <h1>Task List</h1>
+      <SearchComponent />
+    </div>
+  );
+};
+
+export default App;
+```
+
+
 
