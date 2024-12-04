@@ -811,4 +811,38 @@ const App = () => {
 export default App;
 
 ```
+______________________________________________________________________
+
+// Print the title of each task
+```javascript
+
+const tasks = [
+  {
+    title: "Complete the React tutorial",
+    body: "Learn about components, state, and props.",
+  },
+  {
+    title: "Finish the JavaScript project",
+    body: "Implement the remaining features and fix any bugs.",
+  },
+  {
+    title: "Read a book",
+    body: "Choose a book from your reading list and start reading.",
+  },
+  {
+    title: "Go for a walk",
+    body: "Take a break from work and enjoy some fresh air.",
+  },
+  {
+    title: "Learn a new skill",
+    body: "Explore a new hobby or learn a new programming language.",
+  },
+];
+
+// Print the title of each task
+tasks.forEach((task) => {
+  console.log(task.title);
+});
+
+```
 
